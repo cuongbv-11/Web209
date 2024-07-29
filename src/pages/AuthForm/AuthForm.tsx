@@ -48,54 +48,54 @@ const AuthForm = ({ isLogin }: Props) => {
     }
   };
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <h1>{isLogin ? "Login" : "Register"}</h1>
-      <div className="mb-3">
-        <label htmlFor="email" className="form-lable">
-          email
-        </label>
-        <input
-          className="form-control"
-          type="text"
-          {...register("email", { required: true })}
-        />
-        {errors.email && (
-          <span className="text-danger">{errors.email.message}</span>
-        )}
-      </div>
+    <div className="login-popup">
+      <form onSubmit={handleSubmit(onSubmit)} className="login-popup-container">
+        <h1>{isLogin ? "Login" : "Register"}</h1>
+        <div className="login-popup-title">
+          <label htmlFor="email" className="form-lable">
+            email
+          </label>
+          <input
+            className="form-control"
+            type="text"
+            {...register("email", { required: true })}
+          />
+          {errors.email && (
+            <span className="text-danger">{errors.email.message}</span>
+          )}
+        </div>
 
-      <div className="mb-3">
-        <label htmlFor="password" className="form-lable">
-          password
-        </label>
-        <input
-          type="password"
-          className="form-control"
-          {...register("password", { required: true })}
-        />
-        {errors.password && (
-          <span className="text-danger">{errors.password.message}</span>
-        )}
-      </div>
-      {!isLogin && (
-        <div className="mb-3">
-          <label htmlFor="comfirmPass" className="form-lable">
-            comfirmPass
+        <div className="login-popup-inputs">
+          <label htmlFor="password" className="form-lable">
+            password
           </label>
           <input
             type="password"
             className="form-control"
-            {...register("confirmPass", { required: true })}
+            {...register("password", { required: true })}
           />
-          {errors.confirmPass && (
-            <span className="text-danger">{errors.confirmPass.message}</span>
+          {errors.password && (
+            <span className="text-danger">{errors.password.message}</span>
           )}
         </div>
-      )}
-      <button className="btn btn-success">
-        {isLogin ? "Login" : "Register"}
-      </button>
-    </form>
+        {!isLogin && (
+          <div className="login-popup-inputs">
+            <label htmlFor="comfirmPass" className="form-lable">
+              comfirmPass
+            </label>
+            <input
+              type="password"
+              className="form-control"
+              {...register("confirmPass", { required: true })}
+            />
+            {errors.confirmPass && (
+              <span className="text-danger">{errors.confirmPass.message}</span>
+            )}
+          </div>
+        )}
+        <button className="submit">{isLogin ? "Login" : "Register"}</button>
+      </form>
+    </div>
   );
 };
 
