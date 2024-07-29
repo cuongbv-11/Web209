@@ -6,6 +6,8 @@ import Header from "./pages/Header";
 import { useEffect, useState } from "react";
 import { Product } from "./interfaces/Product";
 import { instance } from "./api/api";
+import Dashboard from "./pages/Admin/Dashboard";
+import Form from "./pages/Form/Form";
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -31,7 +33,7 @@ function App() {
       const res = await instance.post(`/products`, data);
       setProducts([...products, res.data]);
     }
-    nav("/product");
+    nav("/admin");
   };
   return (
     <>
@@ -39,9 +41,12 @@ function App() {
       <Routes>
         <Route path="/login" element={<AuthForm isLogin />} />
         <Route path="/register" element={<AuthForm />} />
-        <Route path="/product" />
-        <Route path="/product-add" />
-        <Route path="/product-edit/:id" />
+        <Route
+          path="/admin"
+          element={<Dashboard products={products} onDel={handleRemove} />}
+        />
+        <Route path="/add" element={<Form onSubmit={onSubmitProduct} />} />
+        <Route path="/edit/:id" element={<Form onSubmit={onSubmitProduct} />} />
       </Routes>
     </>
   );
