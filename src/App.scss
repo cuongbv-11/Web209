@@ -1,0 +1,13 @@
+ul.text {
+  display: flex;
+  list-style: none;
+  padding: 15px;
+  margin: 10;
+  li {
+    border: 1ox solid #d34242;
+    padding: 8px 12px;
+    margin: 10px 5px;
+    border-radius: 5px;
+    color: tomato;
+  }
+}
