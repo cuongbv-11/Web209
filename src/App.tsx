@@ -8,6 +8,8 @@ import { Product } from "./interfaces/Product";
 import { instance } from "./api/api";
 import Dashboard from "./pages/Admin/Dashboard";
 import Form from "./pages/Form/Form";
+import Home from "./pages/Home/Home";
+import Detail from "./pages/Home/Detail";
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -41,6 +43,8 @@ function App() {
       <Routes>
         <Route path="/login" element={<AuthForm isLogin />} />
         <Route path="/register" element={<AuthForm />} />
+        <Route path="/" element={<Home products={products} />} />
+        <Route path="/detail/:id" element={<Detail />} />
         <Route
           path="/admin"
           element={<Dashboard products={products} onDel={handleRemove} />}
