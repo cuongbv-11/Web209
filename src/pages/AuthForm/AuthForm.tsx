@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import { User } from "../../interfaces/User";
 import { instance } from "../../api/api";
@@ -35,7 +34,7 @@ const AuthForm = ({ isLogin }: Props) => {
         const res = await instance.post(`/login`, data);
         localStorage.setItem("user", JSON.stringify(res.data.user));
         localStorage.setItem("accessToken", res.data.accessToken);
-        nav("/product");
+        nav("/");
       } else {
         await instance.post(`/register`, {
           email: data.email,

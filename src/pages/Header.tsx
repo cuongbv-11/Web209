@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
 const Header = () => {
@@ -10,20 +9,8 @@ const Header = () => {
             className="navbar-brand text-success logo h1 align-self-center"
             to="/"
           >
-            Zay
+            Nhóm 9
           </Link>
-
-          <button
-            className="navbar-toggler border-0"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#templatemo_main_nav"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
 
           <div
             className="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between"
