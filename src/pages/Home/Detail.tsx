@@ -112,36 +112,16 @@ const Detail = () => {
                     </li>
                   </ul>
 
-                  <form action="" method="GET">
-                    <input
-                      type="hidden"
-                      name="product-title"
-                      value="Activewear"
-                    ></input>
-
-                    <div className="row pb-3">
-                      <div className="col d-grid">
-                        <button
-                          type="submit"
-                          className="btn btn-success btn-lg"
-                          name="submit"
-                          value="buy"
-                        >
-                          Buy
-                        </button>
-                      </div>
-                      <div className="col d-grid">
-                        <button
-                          type="submit"
-                          className="btn btn-success btn-lg"
-                          name="submit"
-                          value="addtocard"
-                        >
-                          Add To Cart
-                        </button>
-                      </div>
+                  <div className="row pb-3">
+                    <div className="col d-grid">
+                      <button className="btn btn-success btn-lg">Buy</button>
                     </div>
-                  </form>
+                    <div className="col d-grid">
+                      <button className="btn btn-success btn-lg">
+                        Add To Cart
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
