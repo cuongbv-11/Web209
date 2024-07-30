@@ -53,7 +53,7 @@ const AuthForm = ({ isLogin }: Props) => {
         <h1>{isLogin ? "Login" : "Register"}</h1>
         <div className="login-popup-title">
           <label htmlFor="email" className="form-lable">
-            email
+            Email
           </label>
           <input
             className="form-control"
@@ -67,7 +67,7 @@ const AuthForm = ({ isLogin }: Props) => {
 
         <div className="login-popup-inputs">
           <label htmlFor="password" className="form-lable">
-            password
+            Password
           </label>
           <input
             type="password"
@@ -81,7 +81,7 @@ const AuthForm = ({ isLogin }: Props) => {
         {!isLogin && (
           <div className="login-popup-inputs">
             <label htmlFor="comfirmPass" className="form-lable">
-              comfirmPass
+              Comfirm Password
             </label>
             <input
               type="password"
