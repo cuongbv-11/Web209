@@ -51,7 +51,7 @@ const Header = () => {
                   </Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/admin">
+                  <Link className="nav-link" to="/cart">
                     <FaShoppingCart style={{ marginRight: "5px" }} />
                     Giỏ Hàng
                   </Link>
