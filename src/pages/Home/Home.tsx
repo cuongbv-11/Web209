@@ -46,7 +46,7 @@ const Home = () => {
                       <p className="card-text">{i.description}</p>
                       <ul className="list-unstyled d-flex justify-content-between">
                         <li>
-                          <Link to={`/detail/${i.id}`}>
+                          <Link to={`/detail/${i._id}`}>
                             <button className="btn btn-primary">Detail</button>
                           </Link>
                         </li>

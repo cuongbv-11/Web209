@@ -17,10 +17,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const login = async (data: User) => {
     try {
-      const res = await instance.post("/login", data);
+      const res = await instance.post("/user/login", data);
       localStorage.setItem("user", JSON.stringify(res.data.user));
       localStorage.setItem("accessToken", res.data.accessToken);
-      nav("/");
+      alert(res.data.message);
+      if (res.data.message === "Đăng nhập thành công") {
+        nav("/");
+      }
     } catch (error: any) {
       alert(error.response?.data || "Error!");
     }
@@ -28,7 +31,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const register = async (data: User) => {
     try {
-      await instance.post("/register", {
+      await instance.post("/user/register", {
         email: data.email,
         password: data.password,
       });

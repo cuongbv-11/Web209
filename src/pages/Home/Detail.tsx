@@ -9,7 +9,7 @@ const Detail = () => {
   useEffect(() => {
     const getProduct = async () => {
       const { data } = await instance.get(`/products/${id}`);
-      setProduct(data);
+      setProduct(data.data);
     };
     getProduct();
   }, []);

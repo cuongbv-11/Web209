@@ -15,14 +15,17 @@ function App() {
   return (
     <StoreProvider>
       <Header />
+
       <Routes>
         <Route path="/login" element={<AuthForm isLogin />} />
         <Route path="/register" element={<AuthForm />} />
         <Route path="/" element={<Home />} />
         <Route path="/detail/:id" element={<Detail />} />
-        <Route path="/admin" element={<Dashboard />} />
-        <Route path="/add" element={<Form />} />
-        <Route path="/edit/:id" element={<Form />} />
+        <Route path="/">
+          <Route path="/admin" element={<Dashboard />} />
+          <Route path="/add" element={<Form />} />
+          <Route path="/edit/:id" element={<Form />} />
+        </Route>
       </Routes>
     </StoreProvider>
   );

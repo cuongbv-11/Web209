@@ -15,6 +15,7 @@ const schema = z.object({
 
 const Form = () => {
   const { id } = useParams();
+
   const nav = useNavigate();
   const { onSubmitProduct } = useStore();
   const {
@@ -30,7 +31,7 @@ const Form = () => {
     if (id) {
       (async () => {
         const { data } = await instance.get(`/products/${id}`);
-        reset(data);
+        reset(data.data);
       })();
     }
   }, [id, reset]);
@@ -41,11 +42,13 @@ const Form = () => {
   };
 
   return (
-    <div>
-      <h1>{id ? "Update" : "Add"}</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="form-group">
-          <label htmlFor="title">Title</label>
+    <div className="login-popup">
+      <form onSubmit={handleSubmit(onSubmit)} className="login-popup-container">
+        <h1>{id ? "Update" : "Add"}</h1>
+        <div className="login-popup-title">
+          <label htmlFor="title" className="form-label">
+            Title
+          </label>
           <input
             className="form-control"
             type="text"
@@ -55,8 +58,10 @@ const Form = () => {
           {errors.title && <span>{errors.title.message}</span>}
         </div>
 
-        <div className="form-group">
-          <label htmlFor="price">Price</label>
+        <div className="login-popup-inputs">
+          <label htmlFor="price" className="form-label">
+            Price
+          </label>
           <input
             className="form-control"
             type="number"
@@ -66,8 +71,10 @@ const Form = () => {
           {errors.price && <span>{errors.price.message}</span>}
         </div>
 
-        <div className="form-group">
-          <label htmlFor="description">Description</label>
+        <div className="login-popup-inputs">
+          <label htmlFor="description" className="form-label">
+            Description
+          </label>
           <textarea
             className="form-control"
             cols={100}
@@ -77,6 +84,7 @@ const Form = () => {
           />
           {errors.description && <span>{errors.description.message}</span>}
         </div>
+
         <button className="btn btn-primary" type="submit">
           Submit
         </button>

@@ -21,18 +21,18 @@ const Dashboard = () => {
         <tbody>
           {products.map((i) => (
             <tr key={i.id}>
-              <td>{i.id}</td>
+              <td>{i._id}</td>
               <td>{i.title}</td>
               <td>{i.price}</td>
               <td>{i.description}</td>
               <td>
                 <button
                   className="btn btn-danger"
-                  onClick={() => handleRemove(i.id)}
+                  onClick={() => handleRemove(i._id)}
                 >
                   Del
                 </button>
-                <Link className="text-decoration-none" to={`/edit/${i.id}`}>
+                <Link className="text-decoration-none" to={`/edit/${i._id}`}>
                   <button className="btn btn-warning ">Edit</button>
                 </Link>
               </td>

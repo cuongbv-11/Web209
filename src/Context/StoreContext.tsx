@@ -22,17 +22,17 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
 
   const fetchProducts = async () => {
     const { data } = await instance.get(`products`);
-    setProducts(data);
+    setProducts(data.data);
   };
 
   useEffect(() => {
     fetchProducts();
   }, []);
 
-  const handleRemove = async (id: any) => {
+  const handleRemove = async (_id: any) => {
     if (confirm("Are you sure?")) {
-      await instance.delete(`products/${id}`);
-      setProducts(products.filter((item) => item.id !== id));
+      await instance.delete(`products/${_id}`);
+      setProducts(products.filter((item) => item._id !== _id));
     }
   };
 
@@ -44,6 +44,7 @@ export const StoreProvider = ({ children }: { children: ReactNode }) => {
       const res = await instance.post(`/products`, data);
       setProducts([...products, res.data]);
     }
+    fetchProducts();
   };
 
   return (
