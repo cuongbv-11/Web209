@@ -1,15 +1,8 @@
 import { Link } from "react-router-dom";
-import { Product } from "../../interfaces/Product";
+import { useStore } from "../../Context/StoreContext";
 
-type Props = {
-  products: Product[];
-  onDel: (id: any) => void;
-};
-
-const Dashboard = ({ products, onDel }: Props) => {
-  const Del = (id: any) => {
-    onDel(id);
-  };
+const Dashboard = () => {
+  const { products, handleRemove } = useStore();
   return (
     <div>
       <Link className="text-decoration-none text-white" to="/add">
@@ -33,7 +26,10 @@ const Dashboard = ({ products, onDel }: Props) => {
               <td>{i.price}</td>
               <td>{i.description}</td>
               <td>
-                <button className="btn btn-danger" onClick={() => Del(i.id)}>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => handleRemove(i.id)}
+                >
                   Del
                 </button>
                 <Link className="text-decoration-none" to={`/edit/${i.id}`}>

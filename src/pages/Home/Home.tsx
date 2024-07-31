@@ -1,11 +1,8 @@
 import { Link } from "react-router-dom";
-import { Product } from "../../interfaces/Product";
+import { useStore } from "../../Context/StoreContext";
 
-type Props = {
-  products: Product[];
-};
-
-const Home = ({ products }: Props) => {
+const Home = () => {
+  const { products } = useStore();
   return (
     <div>
       <body>

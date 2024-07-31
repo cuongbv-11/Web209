@@ -1,25 +1,31 @@
-import { useNavigate } from "react-router-dom";
-import { User } from "../../interfaces/User";
-import { instance } from "../../api/api";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { User } from "../../interfaces/User";
+import { useAuth } from "../../Context/AuthContext";
 
 export const loginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6).max(255),
 });
-export const registerSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6).max(255),
-  confirmPass: z.string().min(6).max(255),
-});
+
+export const registerSchema = z
+  .object({
+    email: z.string().email(),
+    password: z.string().min(6).max(255),
+    confirmPass: z.string().min(6).max(255),
+  })
+  .refine((data) => data.password === data.confirmPass, {
+    message: "Passwords do not match",
+    path: ["confirmPass"],
+  });
 
 type Props = {
   isLogin?: boolean;
 };
 
 const AuthForm = ({ isLogin }: Props) => {
+  const { login, register: registerUser } = useAuth();
   const {
     handleSubmit,
     formState: { errors },
@@ -27,31 +33,21 @@ const AuthForm = ({ isLogin }: Props) => {
   } = useForm<User>({
     resolver: zodResolver(isLogin ? loginSchema : registerSchema),
   });
-  const nav = useNavigate();
+
   const onSubmit = async (data: User) => {
-    try {
-      if (isLogin) {
-        const res = await instance.post(`/login`, data);
-        localStorage.setItem("user", JSON.stringify(res.data.user));
-        localStorage.setItem("accessToken", res.data.accessToken);
-        nav("/");
-      } else {
-        await instance.post(`/register`, {
-          email: data.email,
-          password: data.password,
-        });
-        nav("/login");
-      }
-    } catch (error: any) {
-      alert(error.response.data || "Error!");
+    if (isLogin) {
+      await login(data);
+    } else {
+      await registerUser(data);
     }
   };
+
   return (
     <div className="login-popup">
       <form onSubmit={handleSubmit(onSubmit)} className="login-popup-container">
         <h1>{isLogin ? "Login" : "Register"}</h1>
         <div className="login-popup-title">
-          <label htmlFor="email" className="form-lable">
+          <label htmlFor="email" className="form-label">
             Email
           </label>
           <input
@@ -65,7 +61,7 @@ const AuthForm = ({ isLogin }: Props) => {
         </div>
 
         <div className="login-popup-inputs">
-          <label htmlFor="password" className="form-lable">
+          <label htmlFor="password" className="form-label">
             Password
           </label>
           <input
@@ -79,8 +75,8 @@ const AuthForm = ({ isLogin }: Props) => {
         </div>
         {!isLogin && (
           <div className="login-popup-inputs">
-            <label htmlFor="comfirmPass" className="form-lable">
-              Comfirm Password
+            <label htmlFor="confirmPass" className="form-label">
+              Confirm Password
             </label>
             <input
               type="password"

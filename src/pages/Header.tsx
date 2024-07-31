@@ -1,4 +1,12 @@
 import { Link } from "react-router-dom";
+import {
+  FaHome,
+  FaUserPlus,
+  FaSignInAlt,
+  FaUserShield,
+  FaShoppingCart,
+} from "react-icons/fa";
+import { BiLogOut } from "react-icons/bi";
 
 const Header = () => {
   return (
@@ -20,22 +28,39 @@ const Header = () => {
               <ul className="nav navbar-nav d-flex justify-content-between mx-lg-auto">
                 <li className="nav-item">
                   <Link className="nav-link" to="/">
+                    <FaHome style={{ marginRight: "5px" }} />
                     Home
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/register">
+                    <FaUserPlus style={{ marginRight: "5px" }} />
                     Register
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/login">
+                    <FaSignInAlt style={{ marginRight: "5px" }} />
                     Login
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/admin">
+                    <FaUserShield style={{ marginRight: "5px" }} />
                     Admin
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/admin">
+                    <FaShoppingCart style={{ marginRight: "5px" }} />
+                    Giỏ Hàng
+                  </Link>
+                </li>
+                <hr />
+                <li className="nav-item">
+                  <Link className="nav-link" to="/logout">
+                    <BiLogOut style={{ marginRight: "5px" }} />
+                    logout
                   </Link>
                 </li>
               </ul>

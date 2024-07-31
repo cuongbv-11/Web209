@@ -1,21 +1,22 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { Product } from "../../interfaces/Product";
 import { instance } from "../../api/api";
+import { useStore } from "../../Context/StoreContext";
 
-type Props = {
-  onSubmit: (data: Product) => void;
-};
 const schema = z.object({
   title: z.string().min(6),
   price: z.number().min(0),
   description: z.string().optional(),
 });
-const Form = ({ onSubmit }: Props) => {
+
+const Form = () => {
   const { id } = useParams();
+  const nav = useNavigate();
+  const { onSubmitProduct } = useStore();
   const {
     register,
     handleSubmit,
@@ -24,18 +25,25 @@ const Form = ({ onSubmit }: Props) => {
   } = useForm<Product>({
     resolver: zodResolver(schema),
   });
-  if (id) {
-    useEffect(() => {
+
+  useEffect(() => {
+    if (id) {
       (async () => {
         const { data } = await instance.get(`/products/${id}`);
         reset(data);
       })();
-    }, [id]);
-  }
+    }
+  }, [id, reset]);
+
+  const onSubmit = async (data: Product) => {
+    await onSubmitProduct({ ...data, id });
+    nav("/admin");
+  };
+
   return (
     <div>
       <h1>{id ? "Update" : "Add"}</h1>
-      <form onSubmit={handleSubmit((data) => onSubmit({ ...data, id }))}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
           <label htmlFor="title">Title</label>
           <input
@@ -65,7 +73,7 @@ const Form = ({ onSubmit }: Props) => {
             cols={100}
             rows={3}
             placeholder="Description"
-            {...register("description", { required: true })}
+            {...register("description")}
           />
           {errors.description && <span>{errors.description.message}</span>}
         </div>
