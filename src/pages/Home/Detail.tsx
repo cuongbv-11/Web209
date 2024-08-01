@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { instance } from "../../api/api";
 import { Product } from "../../interfaces/Product";
+import { CartContext } from "../../Context/CartContext";
 
 const Detail = () => {
   const { id } = useParams();
-  const [product, setProduct] = useState<Product | null>(null);
+  const [quantity, setQuantity] = useState(1);
+  const [product, setProduct] = useState<Product>({} as Product);
   useEffect(() => {
     const getProduct = async () => {
       const { data } = await instance.get(`/products/${id}`);
@@ -13,6 +15,15 @@ const Detail = () => {
     };
     getProduct();
   }, []);
+  const { addToCart } = useContext(CartContext);
+  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuantity(Number(e.target.value));
+  };
+
+  const handleAddToCart = () => {
+    addToCart(product, quantity);
+    alert("Add to cart successfully");
+  };
   return (
     <div>
       <section className="bg-light">
@@ -117,8 +128,17 @@ const Detail = () => {
                       <button className="btn btn-success btn-lg">Buy</button>
                     </div>
                     <div className="col d-grid">
-                      <button className="btn btn-success btn-lg">
-                        Add To Cart
+                      <input
+                        type="number"
+                        value={quantity}
+                        min="1"
+                        onChange={handleQuantityChange}
+                      />
+                      <button
+                        className="btn btn-danger"
+                        onClick={handleAddToCart}
+                      >
+                        Add to cart
                       </button>
                     </div>
                   </div>

@@ -1,11 +1,11 @@
 import { CartContext, CartContextType } from "../../Context/CartContext";
 import { CartItem } from "../../reducers/cartReducer";
 import { useContext } from "react";
-
 const CartPage = () => {
   const { state, removeFromCart, checkout } = useContext(
     CartContext
   ) as CartContextType;
+  console.log(state);
   return (
     <>
       <h1>Gio hang cua ban!</h1>
@@ -22,7 +22,7 @@ const CartPage = () => {
         </thead>
         <tbody>
           {state.products.map((product: CartItem, index: number) => (
-            <tr key={product.product.id}>
+            <tr key={product.product._id}>
               <td>{index + 1}</td>
               <td>{product.product.title}</td>
               <td>{product.quantity}</td>
@@ -30,7 +30,7 @@ const CartPage = () => {
               <td>{product.product.price * product.quantity}</td>
               <td>
                 <button
-                  onClick={() => removeFromCart(String(product.product.id))}
+                  onClick={() => removeFromCart(String(product.product._id))}
                   className="btn btn-danger"
                 >
                   Xoa

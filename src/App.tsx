@@ -14,7 +14,7 @@ function App() {
   const nav = useNavigate();
 
   return (
-    <StoreProvider>
+    <>
       <Header />
 
       <Routes>
@@ -29,7 +29,7 @@ function App() {
           <Route path="/edit/:id" element={<Form />} />
         </Route>
       </Routes>
-    </StoreProvider>
+    </>
   );
 }
 
