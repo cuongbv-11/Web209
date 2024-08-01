@@ -23,7 +23,7 @@ const Home = () => {
               {products.map((i) => (
                 <div className="col-12 col-md-4 mb-4">
                   <div className="card h-100">
-                    <a href="shop-single.html">
+                    <a href={`/detail/${i._id}`}>
                       <img
                         src={i.thumbnail}
                         className="card-img-top"

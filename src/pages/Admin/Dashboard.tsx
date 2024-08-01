@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { useStore } from "../../Context/StoreContext";
+import { useState } from "react";
 
 const Dashboard = () => {
   const { products, handleRemove } = useStore();
+  const [image, setImage] = useState<string | null>(null);
   return (
     <div>
       <Link className="text-decoration-none text-white" to="/add">
@@ -15,6 +17,7 @@ const Dashboard = () => {
             <th>Title</th>
             <th>Price</th>
             <th>Description</th>
+            <th>Thumbnail</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -25,6 +28,13 @@ const Dashboard = () => {
               <td>{i.title}</td>
               <td>{i.price}</td>
               <td>{i.description}</td>
+              <td>
+                <img
+                  src={i.thumbnail}
+                  alt={i.title}
+                  style={{ width: "50px" }}
+                />
+              </td>
               <td>
                 <button
                   className="btn btn-danger"
