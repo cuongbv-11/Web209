@@ -15,6 +15,11 @@ const userSchema = new mongoose.Schema(
       type: String,
       require: [true, "Khong duoc de trong"],
     },
+    role: {
+      type: String,
+      enum: ["admin", "member"],
+      default: "member",
+    },
   },
   { timestamps: true }
 );

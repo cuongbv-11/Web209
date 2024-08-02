@@ -77,7 +77,10 @@ const Detail = () => {
               <div className="card">
                 <div className="card-body">
                   <h1 className="h2">{product?.title}</h1>
-                  <p className="h3 py-2">{product?.price}</p>
+                  <p className="h3 py-2">
+                    {product?.price}
+                    <strong>$</strong>
+                  </p>
                   <p className="py-2">
                     <i className="fa fa-star text-warning"></i>
                     <i className="fa fa-star text-warning"></i>

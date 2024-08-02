@@ -3,49 +3,63 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { User } from "../../interfaces/User";
 import { useAuth } from "../../Context/AuthContext";
+import { instance } from "../../api/api";
+import { useNavigate } from "react-router-dom";
 
 export const loginSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6).max(255),
 });
 
-export const registerSchema = z
-  .object({
-    email: z.string().email(),
-    password: z.string().min(6).max(255),
-    confirmPass: z.string().min(6).max(255),
-  })
-  .refine((data) => data.password === data.confirmPass, {
-    message: "Passwords do not match",
-    path: ["confirmPass"],
-  });
+export const registerSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6).max(255),
+});
 
 type Props = {
-  isLogin?: boolean;
+  isRegister?: boolean;
 };
 
-const AuthForm = ({ isLogin }: Props) => {
-  const { login, register: registerUser } = useAuth();
+const AuthForm = ({ isRegister }: Props) => {
+  const { login: contextLogin } = useAuth();
+  const nav = useNavigate();
   const {
     handleSubmit,
     formState: { errors },
     register,
   } = useForm<User>({
-    resolver: zodResolver(isLogin ? loginSchema : registerSchema),
+    resolver: zodResolver(isRegister ? loginSchema : registerSchema),
   });
 
-  const onSubmit = async (data: User) => {
-    if (isLogin) {
-      await login(data);
-    } else {
-      await registerUser(data);
+  const onSubmit = async (user: User) => {
+    try {
+      if (isRegister) {
+        const { data } = await instance.post("/auth/register", {
+          email: user.email,
+          password: user.password,
+        });
+        console.log(user);
+        alert(`Register success with email: ${data.data.email}`);
+        // nav("/login");
+      } else {
+        const { data } = await instance.post("/auth/login", {
+          email: user.email,
+          password: user.password,
+        });
+        console.log(data);
+        contextLogin(data.token, data.user);
+        nav(data.data.user.role === "admin" ? "/admin" : "/");
+      }
+    } catch (error: any) {
+      console.log(error);
+      alert(error.response.data.message);
     }
   };
 
   return (
     <div className="login-popup">
       <form onSubmit={handleSubmit(onSubmit)} className="login-popup-container">
-        <h1>{isLogin ? "Login" : "Register"}</h1>
+        <h1>{isRegister ? "Register" : "Login"}</h1>
         <div className="login-popup-title">
           <label htmlFor="email" className="form-label">
             Email
@@ -73,22 +87,8 @@ const AuthForm = ({ isLogin }: Props) => {
             <span className="text-danger">{errors.password.message}</span>
           )}
         </div>
-        {!isLogin && (
-          <div className="login-popup-inputs">
-            <label htmlFor="confirmPass" className="form-label">
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              className="form-control"
-              {...register("confirmPass", { required: true })}
-            />
-            {errors.confirmPass && (
-              <span className="text-danger">{errors.confirmPass.message}</span>
-            )}
-          </div>
-        )}
-        <button className="submit">{isLogin ? "Login" : "Register"}</button>
+
+        <button className="submit">{isRegister ? "Register" : "Login"}</button>
       </form>
     </div>
   );

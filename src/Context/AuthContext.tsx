@@ -1,57 +1,53 @@
-import React, { createContext, useContext } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { User } from "../interfaces/User";
-import { instance } from "../api/api";
 import { useNavigate } from "react-router-dom";
+import { instance } from "../api/api";
 
-interface AuthContextType {
-  login: (data: User) => Promise<void>;
-  register: (data: User) => Promise<void>;
+export interface AuthContextType {
+  user: User | null;
+  login: (token: string, user: User) => void;
+  logout: () => void;
 }
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const nav = useNavigate();
-
-  const login = async (data: User) => {
-    try {
-      const res = await instance.post("/user/login", data);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
-      localStorage.setItem("accessToken", res.data.accessToken);
-      alert(res.data.message);
-      if (res.data.message === "Đăng nhập thành công") {
-        nav("/");
-      }
-    } catch (error: any) {
-      alert(error.response?.data || "Error!");
-    }
-  };
-
-  const register = async (data: User) => {
-    try {
-      await instance.post("/user/register", {
-        email: data.email,
-        password: data.password,
-      });
-      nav("/login");
-    } catch (error: any) {
-      alert(error.response?.data || "Error!");
-    }
-  };
-
-  return (
-    <AuthContext.Provider value={{ login, register }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};
+export const AuthContext = createContext<AuthContextType | undefined>(
+  undefined
+);
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider");
+    throw new Error("useAuth must be used within a AuthProvider");
   }
   return context;
+};
+
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const nav = useNavigate();
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      const user = JSON.parse(localStorage.getItem("user") || "");
+      setUser(user);
+    }
+  }, []);
+
+  const login = (token: string, user: User) => {
+    localStorage.setItem("accessToken", token);
+    localStorage.setItem("user", JSON.stringify(user));
+    setUser(user);
+    nav(user.role === "admin" ? "/admin" : "/");
+  };
+
+  const logout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("user");
+    setUser(null);
+    nav("/login");
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };

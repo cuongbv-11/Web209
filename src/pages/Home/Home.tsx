@@ -35,7 +35,10 @@ const Home = () => {
                         <li>
                           <p>Price: </p>
                         </li>
-                        <li className="text-muted text-right">{i.price}</li>
+                        <li className="text-muted text-right">
+                          {i.price}
+                          <strong>$</strong>
+                        </li>
                       </ul>
                       <a
                         href="shop-single.html"

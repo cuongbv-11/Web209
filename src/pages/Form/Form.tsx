@@ -107,9 +107,12 @@ const Form = () => {
         </div>
         <div className="login-popup-inputs">
           <label htmlFor="thumbnail" className="form-label">
-            Thumbnail
+            Local
           </label>
           <input type="file" className="form-control" onChange={uploadImage} />
+          <label htmlFor="thumbnail" className="form-label">
+            Link
+          </label>
           <input
             type="text"
             className="form-control"

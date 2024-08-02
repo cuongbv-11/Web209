@@ -1,53 +1,44 @@
+import { errorMessages, successMessages } from "../constants/message.js";
 import User from "../models/User.js";
-import bcryptjs from "bcryptjs";
-import jwt from "jsonwebtoken";
 
-export async function signup(req, res) {
-  const data = req.body;
-  const userExist = await User.findOne({ email: data.email });
-
-  if (userExist) {
-    return res.json({
-      message: `Đã tồn tại email ${data.email}`,
-    });
-  }
-  const passwordHashed = await bcryptjs.hash(data.password, 10);
-  data.password = passwordHashed;
-  User.create(data)
-    .then((newData) => {
-      res.json(newData);
-    })
-    .catch((err) => {
-      res.json({ message: err });
-    });
-}
-
-export async function signin(req, res) {
+export const getUsers = async (req, res, next) => {
   try {
-    const data = req.body;
-    const userExist = await User.findOne({ email: data.email });
+    const data = await User.find({});
 
-    if (!userExist) {
-      return res.json({ message: "Sai tài khoản" });
+    if (!data) {
+      return res.status(400).json({
+        message: errorMessages?.GET_FAIL,
+      });
     }
-
-    const isCheck = await bcryptjs.compare(data.password, userExist.password);
-
-    if (!isCheck) {
-      return res.json({ message: "Sai mật khẩu" });
-    }
-    userExist.password = undefined;
-    const token = await jwt.sign(
-      { email: userExist.name, id: userExist._id },
-      process.env.KEY_SECRET,
-      { expiresIn: "1h" }
-    );
-    res.json({
-      message: "Đăng nhập thành công",
-      userExist,
-      token,
+    const newUser = data.map((user) => {
+      return {
+        ...user._doc, // or user.toObject()
+        password: undefined,
+      };
+    });
+    return res.status(200).json({
+      message: successMessages.GET_SUCCESS,
+      newUser,
     });
   } catch (error) {
-    res.json(error);
+    next(error);
   }
-}
+};
+
+export const getUserById = async (req, res, next) => {
+  try {
+    const data = await User.findById(req.params.id);
+    if (!data) {
+      return res.status(400).json({
+        message: errorMessages?.GET_FAIL,
+      });
+    }
+    data.password = undefined;
+    return res.status(200).json({
+      message: successMessages.GET_SUCCESS,
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

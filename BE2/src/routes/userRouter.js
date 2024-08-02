@@ -1,10 +1,12 @@
 import { Router } from "express";
+import { checkAuth } from "../middleware/checkAuth.js";
+import { checkIsAdmin } from "../middleware/checkAdmin.js";
+import { getUserById, getUsers } from "../controllers/user.js";
 
-import { signin, signup } from "../controllers/user.js";
+const routerUser = Router();
 
-const userRouter = Router();
+routerUser.use(checkAuth, checkIsAdmin);
+routerUser.get("/", getUsers);
+routerUser.get("/:id", getUserById);
 
-userRouter.post("/register", signup);
-userRouter.post("/login", signin);
-
-export default userRouter;
+export default routerUser;

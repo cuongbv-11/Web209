@@ -18,9 +18,10 @@ function App() {
       <Header />
 
       <Routes>
-        <Route path="/login" element={<AuthForm isLogin />} />
-        <Route path="/register" element={<AuthForm />} />
+        <Route path="/login" element={<AuthForm />} />
+        <Route path="/register" element={<AuthForm isRegister />} />
         <Route path="/" element={<Home />} />
+
         <Route path="/cart" element={<Cart />} />
         <Route path="/detail/:id" element={<Detail />} />
         <Route path="/">
