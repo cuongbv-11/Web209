@@ -1,18 +1,31 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { instance } from "../../api/api";
+import { useContext, useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import instance from "../../api/index";
 import { Product } from "../../interfaces/Product";
+import { CartContext } from "../../Context/CartContext";
 
 const Detail = () => {
   const { id } = useParams();
-  const [product, setProduct] = useState<Product | null>(null);
+  const [quantity, setQuantity] = useState(1);
+  const [product, setProduct] = useState<Product>({} as Product);
+  const navigate = useNavigate();
+
   useEffect(() => {
-    const getProduct = async () => {
+    (async () => {
       const { data } = await instance.get(`/products/${id}`);
       setProduct(data.data);
-    };
-    getProduct();
-  }, []);
+    })();
+  }, [id]);
+  const { addToCart } = useContext(CartContext);
+  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuantity(Number(e.target.value));
+  };
+
+  const handleAddToCart = () => {
+    addToCart(product, quantity);
+    alert("Added to cart successfully");
+    navigate("/cart");
+  };
   return (
     <div>
       <section className="bg-light">
@@ -22,7 +35,7 @@ const Detail = () => {
               <div className="card mb-3">
                 <img
                   className="card-img img-fluid"
-                  src={product?.thumbnail}
+                  src={product.thumbnail}
                   alt="Card image cap"
                   id="product-detail"
                 ></img>
@@ -43,7 +56,7 @@ const Detail = () => {
                           <a href="#">
                             <img
                               className="card-img img-fluid"
-                              src={product?.thumbnail}
+                              src={product.thumbnail}
                               alt="Product Image 1"
                             ></img>
                           </a>
@@ -52,7 +65,7 @@ const Detail = () => {
                           <a href="#">
                             <img
                               className="card-img img-fluid"
-                              src={product?.thumbnail}
+                              src={product.thumbnail}
                               alt="Product Image 2"
                             ></img>
                           </a>
@@ -61,7 +74,7 @@ const Detail = () => {
                           <a href="#">
                             <img
                               className="card-img img-fluid"
-                              src={product?.thumbnail}
+                              src={product.thumbnail}
                               alt="Product Image 3"
                             ></img>
                           </a>
@@ -76,8 +89,8 @@ const Detail = () => {
             <div className="col-lg-7 mt-5">
               <div className="card">
                 <div className="card-body">
-                  <h1 className="h2">{product?.title}</h1>
-                  <p className="h3 py-2">{product?.price}</p>
+                  <h1 className="h2">{product.title}</h1>
+                  <p className="h3 py-2">{product.price}</p>
                   <p className="py-2">
                     <i className="fa fa-star text-warning"></i>
                     <i className="fa fa-star text-warning"></i>
@@ -94,13 +107,13 @@ const Detail = () => {
                     </li>
                     <li className="list-inline-item">
                       <p className="text-muted">
-                        <strong>{product?.title}</strong>
+                        <strong>{product.title}</strong>
                       </p>
                     </li>
                   </ul>
 
                   <h6>Description:</h6>
-                  <p>{product?.description}</p>
+                  <p>{product.description}</p>
                   <ul className="list-inline">
                     <li className="list-inline-item">
                       <h6>Avaliable Color :</h6>
@@ -117,8 +130,17 @@ const Detail = () => {
                       <button className="btn btn-success btn-lg">Buy</button>
                     </div>
                     <div className="col d-grid">
-                      <button className="btn btn-success btn-lg">
-                        Add To Cart
+                      <input
+                        type="number"
+                        value={quantity}
+                        min="1"
+                        onChange={handleQuantityChange}
+                      />
+                      <button
+                        className="btn btn-danger"
+                        onClick={handleAddToCart}
+                      >
+                        Add to cart
                       </button>
                     </div>
                   </div>

@@ -1,21 +1,26 @@
 import mongoose from "mongoose";
-function validateEmail(textEmail) {
-  return /^\S+@\S+\.\S+$/.test(textEmail);
-}
 const userSchema = new mongoose.Schema(
   {
     email: {
       type: String,
-      validate: {
-        validator: validateEmail,
-        message: "Khong dung dinh dang",
-      },
+      required: true,
+      unique: true,
     },
     password: {
       type: String,
-      require: [true, "Khong duoc de trong"],
+      required: true,
+    },
+    username: {
+      type: String,
+    },
+    role: {
+      type: String,
+      enum: ["admin", "member"],
+      default: "member",
     },
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
-export default mongoose.model("users", userSchema);
+
+const userModel = mongoose.models.user || mongoose.model("user", userSchema);
+export default userModel;

@@ -34,7 +34,7 @@ const cartReducer = (state: State, action: CartAction) => {
       return {
         ...state,
         products: state.products.filter(
-          (item) => item.product.id !== action.payload.productId
+          (item) => item.product._id !== action.payload.productId
         ),
       };
 

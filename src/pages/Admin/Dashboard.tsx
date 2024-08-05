@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom";
-import { useStore } from "../../Context/StoreContext";
-import { useState } from "react";
+import { ProductContext } from "../../Context/ProductContext";
+import { useContext } from "react";
+import { Product } from "../../interfaces/Product";
 
 const Dashboard = () => {
-  const { products, handleRemove } = useStore();
-  const [image, setImage] = useState<string | null>(null);
+  const { state, handleRemove } = useContext(ProductContext);
+  console.log(state.products);
+
   return (
     <div>
-      <Link className="text-decoration-none text-white" to="/add">
+      <Link className="text-decoration-none text-white" to="/product-add">
         <button className="btn btn-primary">Add</button>
       </Link>
       <table className="table table-bordered table-striped text-center border-dark">
@@ -22,8 +24,8 @@ const Dashboard = () => {
           </tr>
         </thead>
         <tbody>
-          {products.map((i) => (
-            <tr key={i.id}>
+          {state.products.map((i: Product) => (
+            <tr key={i._id}>
               <td>{i._id}</td>
               <td>{i.title}</td>
               <td>{i.price}</td>
@@ -38,7 +40,7 @@ const Dashboard = () => {
               <td>
                 <button
                   className="btn btn-danger"
-                  onClick={() => handleRemove(i._id)}
+                  onClick={() => handleRemove(i._id!)}
                 >
                   Del
                 </button>

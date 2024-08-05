@@ -1,67 +1,62 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useParams, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { Product } from "../../interfaces/Product";
-import { instance } from "../../api/api";
-import { useStore } from "../../Context/StoreContext";
-
-const schema = z.object({
-  title: z.string().min(6),
-  price: z.number().min(0),
-  description: z.string().optional(),
-  thumbnail: z.string().optional(),
-});
+import instance from "../../api/index";
+import { ProductContext } from "../../Context/ProductContext";
+import { Category } from "../../interfaces/Category";
+import productSchema from "../../utils/productSchema";
+import ImageUploader from "../Home/ImageUploader";
 
 const Form = () => {
-  const cloud_name = "dbzb6a9g3";
-  const preset_key = "upload";
-  const [image, setImage] = useState();
-  const uploadImage = async (e: any) => {
-    const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", preset_key);
-    const response = await fetch(
-      `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
-    const data = await response.json();
-    setImage(data.url);
-    console.log(data);
-    return data.url;
-  };
   const { id } = useParams();
-
-  const nav = useNavigate();
-  const { onSubmitProduct } = useStore();
+  const [categories, setCategories] = useState([] as Category[]);
+  const { handleProduct } = useContext(ProductContext);
+  const [cateSelected, setCateSelected] = useState({} as Category);
   const {
-    register,
     handleSubmit,
     formState: { errors },
     reset,
+    register,
   } = useForm<Product>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(productSchema),
   });
+
+  const [productImage, setProductImage] = useState<string>("");
+
+  const handleImageChange = (newImage: string) => {
+    setProductImage(newImage);
+  };
 
   useEffect(() => {
     if (id) {
       (async () => {
         const { data } = await instance.get(`/products/${id}`);
+        console.log(data);
+        setCateSelected(data.data.category);
         reset(data.data);
       })();
     }
   }, [id, reset]);
 
-  const onSubmit = async (data: Product) => {
-    await onSubmitProduct({ ...data, id });
-    nav("/admin");
+  const onSubmit = async (product: Product) => {
+    try {
+      console.log(product);
+      const updatedProduct = { ...product, thumbnail: productImage };
+      handleProduct(updatedProduct);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
+  useEffect(() => {
+    (async () => {
+      const { data } = await instance.get("/categories");
+      setCategories(data.data);
+    })();
+  }, []);
   return (
     <div className="login-popup">
       <form onSubmit={handleSubmit(onSubmit)} className="login-popup-container">
@@ -105,18 +100,37 @@ const Form = () => {
           />
           {errors.description && <span>{errors.description.message}</span>}
         </div>
-        <div className="login-popup-inputs">
-          <label htmlFor="thumbnail" className="form-label">
-            Thumbnail
+        <div className="mb-3">
+          <label htmlFor="category" className="form-label">
+            Category
           </label>
-          <input type="file" className="form-control" onChange={uploadImage} />
-          <input
-            type="text"
+          <select
+            id="category"
             className="form-control"
-            defaultValue={image}
-            {...register("thumbnail")}
+            {...register("category")}
+          >
+            {categories.map((category) =>
+              cateSelected._id == category._id ? (
+                <option key={category._id} value={category._id} selected>
+                  {category.name}
+                </option>
+              ) : (
+                <option key={category._id} value={category._id}>
+                  {category.name}
+                </option>
+              )
+            )}
+          </select>
+        </div>
+
+        <div className="mb-3">
+          <ImageUploader
+            initialImage={productImage}
+            onImageChange={handleImageChange}
           />
         </div>
+
+        {productImage && <img src={productImage} />}
         <button className="btn btn-primary" type="submit">
           Submit
         </button>

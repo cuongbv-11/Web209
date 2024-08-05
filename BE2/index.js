@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import { errorCommon, errorNotFound } from "./src/utils/handleError.js";
+
 import router from "./src/routes/index.js";
 import mongoose from "mongoose";
 
@@ -13,6 +15,8 @@ const app = express();
 app.use(cors());
 
 app.use(express.json());
+//error handler
+app.use(errorNotFound, errorCommon);
 
 mongoose
   .connect(DB_URI)

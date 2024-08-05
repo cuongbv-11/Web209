@@ -1,8 +1,12 @@
 import { Link } from "react-router-dom";
-import { useStore } from "../../Context/StoreContext";
+import { useContext } from "react";
+import {
+  ProductContext,
+  ProductContextType,
+} from "../../Context/ProductContext";
 
 const Home = () => {
-  const { products } = useStore();
+  const { state } = useContext<ProductContextType>(ProductContext);
   return (
     <div>
       <body>
@@ -20,10 +24,10 @@ const Home = () => {
             </div>
 
             <div className="row">
-              {products.map((i) => (
+              {state.products.map((i) => (
                 <div className="col-12 col-md-4 mb-4">
                   <div className="card h-100">
-                    <a href={`/detail/${i._id}`}>
+                    <a href={`/product-detail/${i._id}`}>
                       <img
                         src={i.thumbnail}
                         className="card-img-top"
@@ -46,7 +50,7 @@ const Home = () => {
                       <p className="card-text">{i.description}</p>
                       <ul className="list-unstyled d-flex justify-content-between">
                         <li>
-                          <Link to={`/detail/${i._id}`}>
+                          <Link to={`/product-detail/${i._id}`}>
                             <button className="btn btn-primary">Detail</button>
                           </Link>
                         </li>

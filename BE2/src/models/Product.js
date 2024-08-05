@@ -10,14 +10,25 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-
     description: {
       type: String,
-      required: true,
     },
-    thumbnail: {
-      type: String,
-      required: true,
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+    },
+    thumbnail: { type: String },
+    isHidden: {
+      type: Boolean,
+      default: false,
+    },
+    stock: {
+      type: Number,
+      default: 0,
+    },
+    rate: {
+      type: Number,
+      default: 0,
     },
   },
   {

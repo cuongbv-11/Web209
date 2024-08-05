@@ -1,4 +1,4 @@
-import { instance } from "../api/api";
+import instance from "../api/api";
 import { Product } from "../interfaces/Product";
 import React, { createContext, useReducer, ReactNode } from "react";
 import cartReducer from "../reducers/cartReducer";
