@@ -7,8 +7,10 @@ import {
   FaShoppingCart,
 } from "react-icons/fa";
 import { BiLogOut } from "react-icons/bi";
+import { useAuth } from "../Context/AuthContext";
 
 const Header = () => {
+  const { logout } = useAuth();
   return (
     <header>
       <nav className="navbar navbar-expand-lg navbar-light shadow">
@@ -58,10 +60,10 @@ const Header = () => {
                 </li>
                 <hr />
                 <li className="nav-item">
-                  <Link className="nav-link" to="/logout">
+                  <button className="nav-link" onClick={logout}>
                     <BiLogOut style={{ marginRight: "5px" }} />
                     logout
-                  </Link>
+                  </button>
                 </li>
               </ul>
             </div>

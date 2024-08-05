@@ -12,7 +12,7 @@
     "nodejs",
     "fpoly"
   ],
-  "author": "hoangnm",
+  "author": "thangtx",
   "license": "MIT",
   "dependencies": {
     "bcryptjs": "^2.4.3",

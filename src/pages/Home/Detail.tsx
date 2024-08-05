@@ -89,8 +89,16 @@ const Detail = () => {
             <div className="col-lg-7 mt-5">
               <div className="card">
                 <div className="card-body">
+<<<<<<< HEAD
                   <h1 className="h2">{product.title}</h1>
                   <p className="h3 py-2">{product.price}</p>
+=======
+                  <h1 className="h2">{product?.title}</h1>
+                  <p className="h3 py-2">
+                    {product?.price}
+                    <strong>$</strong>
+                  </p>
+>>>>>>> 44a5c579e20b6d09b6ff4e7a132fc98672315067
                   <p className="py-2">
                     <i className="fa fa-star text-warning"></i>
                     <i className="fa fa-star text-warning"></i>

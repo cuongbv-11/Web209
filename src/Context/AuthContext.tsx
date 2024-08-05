@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { User } from "../interfaces/User";
 import { useNavigate } from "react-router-dom";
+import { instance } from "../api/api";
 
 export interface AuthContextType {
   user: User | null;
@@ -43,6 +44,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUser(null);
     nav("/login");
   };
+<<<<<<< HEAD
+=======
+
+>>>>>>> 44a5c579e20b6d09b6ff4e7a132fc98672315067
   return (
     <AuthContext.Provider value={{ user, login, logout }}>
       {children}

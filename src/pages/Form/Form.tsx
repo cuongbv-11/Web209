@@ -100,12 +100,25 @@ const Form = () => {
           />
           {errors.description && <span>{errors.description.message}</span>}
         </div>
+<<<<<<< HEAD
         <div className="mb-3">
           <label htmlFor="category" className="form-label">
             Category
           </label>
           <select
             id="category"
+=======
+        <div className="login-popup-inputs">
+          <label htmlFor="thumbnail" className="form-label">
+            Local
+          </label>
+          <input type="file" className="form-control" onChange={uploadImage} />
+          <label htmlFor="thumbnail" className="form-label">
+            Link
+          </label>
+          <input
+            type="text"
+>>>>>>> 44a5c579e20b6d09b6ff4e7a132fc98672315067
             className="form-control"
             {...register("category")}
           >

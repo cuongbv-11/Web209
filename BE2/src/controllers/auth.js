@@ -59,7 +59,11 @@ export const login = async (req, res, next) => {
       });
     }
 
+<<<<<<< HEAD
     const token = ({ _id: userExists._id }, "1000d");
+=======
+    const token = generateToken({ _id: userExists._id }, "1000d");
+>>>>>>> 44a5c579e20b6d09b6ff4e7a132fc98672315067
 
     userExists.password = undefined;
     return res.status(201).json({
@@ -69,7 +73,10 @@ export const login = async (req, res, next) => {
     });
   } catch (error) {
     next(error);
+<<<<<<< HEAD
     console.log(error);
+=======
+>>>>>>> 44a5c579e20b6d09b6ff4e7a132fc98672315067
   }
 };
 
